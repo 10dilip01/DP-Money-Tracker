@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/mt.css">
+  <title>Overview</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f8f9fa;
+      color: #6c757d;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #007bff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #dee2e6;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tbody tr:hover {
+      background-color: #f0f8ff;
+    }
+
+    a {
+      color: #007bff;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+
+    .action {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body class="container">
+  <h1 class="my-4">Transaction Overview</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% transactions.forEach(transaction => { %>
+      <tr>
+        <td><%= transaction.description %></td>
+        <td><%= transaction.amount %></td>
+        <td><%= transaction.type %></td>
+        <td>
+          <a href="/editTransaction/<%= transaction._id %>" class="action">Edit</a> /
+          <a href="/deleteTransaction/<%= transaction._id %>" class="action">Delete</a>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <a href="/" class="btn btn-secondary">Go to Home</a>
+  <a href="/addTransaction" class="btn btn-secondary">Add New Transaction</a>
+</body>
+</html>

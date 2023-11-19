@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/mt.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+  <title>DP Money Tracker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f8f9fa;
+      color: #6c757d;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #007bff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #dee2e6;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tbody tr:hover {
+      background-color: #f0f8ff;
+    }
+
+    a {
+      color: #007bff;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #fff;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    canvas {
+      max-width: 400px;
+      margin-top: 50px;
+    }
+
+    .cen{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    @media (min-width: 768px) {
+      .col-md-6 {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+  </style>
+</head>
+<body class="container">
+  <h1 class="my-4">Money Tracker</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% transactions.forEach(transaction => { %>
+      <tr>
+        <td><%= transaction.description %></td>
+        <td><%= transaction.amount %></td>
+        <td><%= transaction.type %></td>
+        <td>
+          <a href="/editTransaction/<%= transaction._id %>" class="action">Edit 🖋️</a> /
+          <a href="/deleteTransaction/<%= transaction._id %>" class="action">Delete 🗑️</a>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <a href="/addTransaction" class="btn btn-primary">Add New Transaction</a>
+
+  <div class="row">
+    <div class="cen">
+      <canvas id="pieChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Access the income and expenses variables from the backend
+      var income = parseFloat(<%= income %>); // Convert income from string to number
+      var expenses = parseFloat(<%= expenses %>); // Convert expenses from string to number
+
+      var ctx = document.getElementById("pieChart").getContext("2d");
+
+      var data = {
+        datasets: [{
+          data: [expenses, income],
+          backgroundColor: ['#d9534f', '#5cb85c'],
+        }],
+        labels: ['Expenses', 'Income'],
+      };
+
+      var options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        title: {
+          display: true,
+          text: 'Financial Overview',
+          align: 'center',
+          fontSize: 20,
+          fontColor: '#007bff'
+        },
+      };
+
+      var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options,
+      });
+    });
+  </script>
+</body>
+</html>
